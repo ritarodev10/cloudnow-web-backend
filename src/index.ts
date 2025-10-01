@@ -24,11 +24,78 @@ export default {
     
     try {
       await addInitialData(strapi);
+      await configurePublicPermissions(strapi);
     } catch (error) {
       console.error('❌ Bootstrap error:', error);
     }
   },
 };
+
+async function configurePublicPermissions(strapi: Core.Strapi) {
+  try {
+    console.log('🔐 Configuring public permissions...');
+    
+    // Get the public role
+    const publicRole = await strapi
+      .query('plugin::users-permissions.role')
+      .findOne({ where: { type: 'public' } });
+
+    if (!publicRole) {
+      console.log('❌ Public role not found');
+      return;
+    }
+
+    // Define permissions for content types
+    const permissions = [
+      { action: 'api::article.article.find', subject: null },
+      { action: 'api::article.article.findOne', subject: null },
+      { action: 'api::category.category.find', subject: null },
+      { action: 'api::category.category.findOne', subject: null },
+      { action: 'api::tag.tag.find', subject: null },
+      { action: 'api::tag.tag.findOne', subject: null },
+      { action: 'api::author.author.find', subject: null },
+      { action: 'api::author.author.findOne', subject: null },
+    ];
+
+    // Create or update permissions
+    for (const permission of permissions) {
+      try {
+        // Check if permission already exists
+        const existingPermission = await strapi
+          .query('plugin::users-permissions.permission')
+          .findOne({
+            where: {
+              action: permission.action,
+              role: publicRole.id,
+            },
+          });
+
+        if (!existingPermission) {
+          await strapi
+            .query('plugin::users-permissions.permission')
+            .create({
+              data: {
+                action: permission.action,
+                subject: permission.subject,
+                properties: {},
+                conditions: [],
+                role: publicRole.id,
+              },
+            });
+          console.log(`✅ Created permission: ${permission.action}`);
+        } else {
+          console.log(`ℹ️ Permission already exists: ${permission.action}`);
+        }
+      } catch (error) {
+        console.error(`❌ Error creating permission ${permission.action}:`, error);
+      }
+    }
+
+    console.log('✅ Public permissions configured successfully!');
+  } catch (error) {
+    console.error('❌ Error configuring permissions:', error);
+  }
+}
 
 async function addInitialData(strapi: Core.Strapi) {
   console.log('📊 Checking for existing data...');
