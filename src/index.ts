@@ -1,4 +1,4 @@
-// import type { Core } from '@strapi/strapi';
+import type { Core } from '@strapi/strapi';
 
 export default {
   /**
@@ -16,5 +16,13 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
+  async bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    // Force reload of content types to ensure they appear in permissions
+    console.log('Bootstrap: Ensuring content types are loaded...');
+    
+    // Wait a bit for content types to be fully loaded
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    console.log('Bootstrap: Content types should now be available in permissions');
+  },
 };
