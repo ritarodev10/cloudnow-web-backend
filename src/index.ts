@@ -60,10 +60,10 @@ async function createCategories(strapi: Core.Strapi) {
     console.log('📁 Creating categories...');
     
     const categories = [
-      { name: 'Technology', description: 'Latest technology trends and insights' },
-      { name: 'Business', description: 'Business strategies and entrepreneurship' },
-      { name: 'Tutorials', description: 'Step-by-step guides and tutorials' },
-      { name: 'Design', description: 'UI/UX design and creative content' }
+      { name: 'Technology', slug: 'technology', description: 'Latest technology trends and insights' },
+      { name: 'Business', slug: 'business', description: 'Business strategies and entrepreneurship' },
+      { name: 'Tutorials', slug: 'tutorials', description: 'Step-by-step guides and tutorials' },
+      { name: 'Design', slug: 'design', description: 'UI/UX design and creative content' }
     ];
 
     for (const categoryData of categories) {
@@ -92,19 +92,32 @@ async function createTags(strapi: Core.Strapi) {
     console.log('🏷️ Creating tags...');
     
     const tags = [
-      'React', 'Next.js', 'JavaScript', 'TypeScript', 'CSS', 'HTML',
-      'Node.js', 'API', 'Database', 'Tutorial', 'Guide', 'Tips',
-      'Frontend', 'Backend', 'Full-stack', 'Web Development'
+      { name: 'React', slug: 'react' },
+      { name: 'Next.js', slug: 'nextjs' },
+      { name: 'JavaScript', slug: 'javascript' },
+      { name: 'TypeScript', slug: 'typescript' },
+      { name: 'CSS', slug: 'css' },
+      { name: 'HTML', slug: 'html' },
+      { name: 'Node.js', slug: 'nodejs' },
+      { name: 'API', slug: 'api' },
+      { name: 'Database', slug: 'database' },
+      { name: 'Tutorial', slug: 'tutorial' },
+      { name: 'Guide', slug: 'guide' },
+      { name: 'Tips', slug: 'tips' },
+      { name: 'Frontend', slug: 'frontend' },
+      { name: 'Backend', slug: 'backend' },
+      { name: 'Full-stack', slug: 'fullstack' },
+      { name: 'Web Development', slug: 'web-development' }
     ];
 
-    for (const tagName of tags) {
+    for (const tagData of tags) {
       await strapi.entityService.create('api::tag.tag', {
         data: {
-          name: tagName,
+          ...tagData,
           publishedAt: new Date()
         }
       });
-      console.log(`✅ Created tag: ${tagName}`);
+      console.log(`✅ Created tag: ${tagData.name}`);
     }
   } catch (error) {
     console.error('❌ Error creating tags:', error);
@@ -125,6 +138,7 @@ async function createAuthor(strapi: Core.Strapi) {
     const author = await strapi.entityService.create('api::author.author', {
       data: {
         displayName: 'Riza Rizohman',
+        slug: 'riza-rizohman',
         bio: 'Full-stack developer passionate about creating amazing web experiences. Love working with React, Next.js, and modern web technologies.',
         socialLinks: {
           website: 'https://cloudnowcorp.com',
@@ -166,6 +180,7 @@ async function createArticles(strapi: Core.Strapi) {
     const articles = [
       {
         title: 'Welcome to CloudNow Blog',
+        slug: 'welcome-to-cloudnow-blog',
         excerpt: 'Welcome to our new blog! We\'re excited to share insights about technology, business, and web development.',
         content: `# Welcome to CloudNow Blog! 🚀
 
@@ -198,6 +213,7 @@ Stay tuned for more exciting content coming your way!
       },
       {
         title: 'Getting Started with Next.js 14',
+        slug: 'getting-started-with-nextjs-14',
         excerpt: 'Learn how to build modern web applications with Next.js 14, including new features and best practices.',
         content: `# Getting Started with Next.js 14 🎯
 
