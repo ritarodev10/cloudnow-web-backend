@@ -1,6 +1,6 @@
 {
   "kind": "singleType",
-  "collectionName": "site_settings",
+  "collectionName": "site_settings_collection",
   "info": {
     "singularName": "site-settings",
     "pluralName": "site-settings",
