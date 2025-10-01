@@ -1,0 +1,37 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-settings",
+    "pluralName": "site-settings",
+    "displayName": "Site Settings",
+    "description": "Global site configuration"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "siteName": {
+      "type": "string"
+    },
+    "siteDescription": {
+      "type": "text"
+    },
+    "defaultSeo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    },
+    "blogPageHero": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.hero"
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.social-links"
+    }
+  }
+}
