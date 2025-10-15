@@ -21,6 +21,9 @@ export default {
             status: 'success'
           };
         },
+        config: {
+          auth: false, // Disable authentication for this route
+        },
       },
     ]);
   },
