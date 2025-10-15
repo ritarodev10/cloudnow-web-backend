@@ -39,16 +39,30 @@ export default {
     console.log('🚀 Bootstrap: Starting initial data setup...');
     
     // Wait for Strapi to be fully ready
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 3000));
     
     try {
       await addInitialData(strapi);
       await configurePublicPermissions(strapi);
+      await forceContentTypeRegistration(strapi);
     } catch (error) {
       console.error('❌ Bootstrap error:', error);
     }
   },
 };
+
+async function forceContentTypeRegistration(strapi: Core.Strapi) {
+  try {
+    console.log('🔄 Force registering content types...');
+    
+    // Force reload content types
+    await strapi.reload();
+    
+    console.log('✅ Content types should now be available in API tokens');
+  } catch (error) {
+    console.error('❌ Error force registering content types:', error);
+  }
+}
 
 async function configurePublicPermissions(strapi: Core.Strapi) {
   try {
