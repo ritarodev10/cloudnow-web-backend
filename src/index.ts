@@ -25,11 +25,37 @@ export default {
     try {
       await addInitialData(strapi);
       await configurePublicPermissions(strapi);
+      await createTestRoute(strapi);
     } catch (error) {
       console.error('❌ Bootstrap error:', error);
     }
   },
 };
+
+async function createTestRoute(strapi: Core.Strapi) {
+  try {
+    console.log('🧪 Creating test route...');
+    
+    // Create a simple test route
+    strapi.server.routes([
+      {
+        method: 'GET',
+        path: '/api/test',
+        handler: async (ctx) => {
+          ctx.body = {
+            message: 'API is working!',
+            timestamp: new Date().toISOString(),
+            contentTypes: ['articles', 'categories', 'tags', 'authors']
+          };
+        },
+      },
+    ]);
+    
+    console.log('✅ Test route created at /api/test');
+  } catch (error) {
+    console.error('❌ Error creating test route:', error);
+  }
+}
 
 async function configurePublicPermissions(strapi: Core.Strapi) {
   try {
